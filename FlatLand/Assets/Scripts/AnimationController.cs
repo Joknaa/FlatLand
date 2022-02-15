@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum AnimationState {
+public enum PlayerState {
     Idle,
     Walking,
     Running,
@@ -12,11 +12,11 @@ public enum AnimationState {
 public class AnimationController : MonoBehaviour {
     private const string PLAYER_ANIMATIONS_LAYER = "PlayerAnimations";
     
-    private AnimationState _currentState = AnimationState.Idle;
+    private PlayerState _currentState = PlayerState.Idle;
     [SerializeField] private Animator playerAnimator;
     
     
-    public void SetAnimationState(AnimationState newState) {
+    public void SetAnimationState(PlayerState newState) {
         if (_currentState == newState) return;
 
         playerAnimator.Play(newState.ToString(), playerAnimator.GetLayerIndex(PLAYER_ANIMATIONS_LAYER));
