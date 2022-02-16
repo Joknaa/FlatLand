@@ -19,9 +19,18 @@ public class AnimationController : MonoBehaviour {
     public void SetAnimationState(PlayerState newState) {
         if (_currentState == newState) return;
 
-        playerAnimator.Play(newState.ToString(), playerAnimator.GetLayerIndex(PLAYER_ANIMATIONS_LAYER));
+        int layerID = playerAnimator.GetLayerIndex(PLAYER_ANIMATIONS_LAYER);
+        var test = playerAnimator.GetAnimatorTransitionInfo(layerID);
+        
+        //test.duration = 0.8;
+        
+        playerAnimator.Play(newState.ToString(), layerID);
 
         _currentState = newState;
+    }
+
+    public void SetVelocity(float velocity) {
+        playerAnimator.SetFloat("Velocity", velocity);
     }
 
 }

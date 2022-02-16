@@ -6,6 +6,7 @@ public class MovementController : MonoBehaviour {
     [SerializeField] private float moveSpeed;
     [SerializeField] private float sprintSpeed;
     [SerializeField] private float rotationSpeed;
+    private Rigidbody _rigidbody;
     private CharacterController _characterController;
     private AnimationController _animationController;
     private float _speed;
@@ -15,6 +16,7 @@ public class MovementController : MonoBehaviour {
     private void Start() {
         _characterController = GetComponent<CharacterController>();
         _animationController = GetComponent<AnimationController>();
+        _rigidbody = GetComponent<Rigidbody>();
         _animationController.SetAnimationState(PlayerState.Idle);
     }
 
@@ -29,7 +31,9 @@ public class MovementController : MonoBehaviour {
             _animationController.SetAnimationState(PlayerState.Idle);
             return;
         }
-        
+
+        //_animationController.
+
         _animationController.SetAnimationState(_isSprinting ? PlayerState.Sprinting : PlayerState.Running);
 
         float targetAngle = Mathf.Atan2(_inputDirection.x, _inputDirection.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
