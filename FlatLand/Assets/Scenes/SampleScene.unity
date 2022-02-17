@@ -181,6 +181,8 @@ MonoBehaviour:
   cameraTransform: {fileID: 963194228}
   moveSpeed: 5
   sprintSpeed: 10
+  acceleration: 0.774
+  deceleration: 0.99
   rotationSpeed: 10
 --- !u!4 &146511300
 Transform:
