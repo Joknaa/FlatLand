@@ -12,8 +12,9 @@ public class MovementController : MonoBehaviour {
     private CharacterController _characterController;
     private AnimationController _animationController;
     private float _speed;
+    private float _maxSpeed;
     private Vector3 _inputDirection;
-    private float _input_Magnitude;
+    private float _inputMagnitude;
     private bool _isSprinting;
     
     private void Start() {
@@ -25,38 +26,31 @@ public class MovementController : MonoBehaviour {
 
     private void Update() {
         _inputDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        _input_Magnitude = _inputDirection.magnitude;
+        _inputMagnitude = _inputDirection.magnitude;
         _inputDirection = _inputDirection.normalized;
         _isSprinting = Input.GetKey(KeyCode.LeftShift);
     }
 
     private void FixedUpdate() {
-        _animationController.SetVelocity(_input_Magnitude);
-        Debug.Log(_input_Magnitude);
+        _animationController.SetVelocity(_inputMagnitude);
+        Debug.Log(_inputMagnitude);
         
-        if (_input_Magnitude < 0.1f) {
+        if (_inputMagnitude < 0.1f) {
             //_speed = Decelerate(0f, deceleration);
             //_animationController.SetVelocity(_speed/(moveSpeed));
             //Debug.Log(_speed/(_input_Magnitude));
             _speed = 0;
-            _animationController.SetAnimationState(PlayerState.Idle);
             return;
         }
         
-        //_speed = Accelerate(_isSprinting ? sprintSpeed : moveSpeed, acceleration);
-        _speed = (_isSprinting ? sprintSpeed : moveSpeed) * _input_Magnitude;
+        _maxSpeed = _isSprinting ? sprintSpeed : moveSpeed;
+        _speed = _maxSpeed * _inputMagnitude;
         
-        _animationController.SetAnimationState(_isSprinting ? PlayerState.Sprinting : PlayerState.Running);
-
         float targetAngle = Mathf.Atan2(_inputDirection.x, _inputDirection.z) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, targetAngle, 0f), rotationSpeed * Time.deltaTime);
 
         Vector3 moveDirection = Quaternion.Euler(0f, targetAngle, 0f).normalized * Vector3.forward;
         _characterController.Move(moveDirection * _speed * Time.deltaTime);
-        
-        //Debug.Log(_characterController.velocity.magnitude/(_isSprinting ? sprintSpeed : moveSpeed));
-        //_animationController.SetVelocity(_characterController.velocity.magnitude/(moveSpeed));
-
     }
 
     private float Accelerate(float targetSpeed, float accelerationFactor) {
